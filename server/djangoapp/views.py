@@ -118,17 +118,22 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status":400,"message":"Bad Request"})
 
 def get_dealer_reviews(request, dealer_id):
-    # if dealer id has been provided
-    if(dealer_id):
-        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
+    if dealer_id:
+        endpoint = "/fetchReviews/dealer/" + str(dealer_id)
         reviews = get_request(endpoint)
+        print(reviews)
         for review_detail in reviews:
-            response = analyze_review_sentiments(review_detail['review'])
+            # response = analyze_review_sentiments(review_detail["review"])
+            response = "positive"
+
             print(response)
-            review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status":200,"reviews":reviews})
+            # review_detail["sentiment"] = response["sentiment"]
+            review_detail["sentiment"] = "Positive"
+
+        return JsonResponse({"status": 200, "reviews": reviews})
     else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 def add_review(request):
     if(request.user.is_anonymous == False):
